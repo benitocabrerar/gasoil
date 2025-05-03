@@ -1,0 +1,45 @@
+### Variables
+@baseUrl = http://localhost:5001/your-project/region
+@token = your-auth-token
+
+### Crear un nuevo artículo
+POST {{baseUrl}}/createArticle
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Ejemplo de Artículo",
+    "content": "Este es un artículo de prueba con contenido detallado...",
+    "author": "Juan Pérez",
+    "authorRole": "Editor Senior",
+    "summary": "Resumen del artículo de prueba",
+    "tags": ["test", "ejemplo", "documentación"],
+    "category": "Tutorial",
+    "imageUrls": []
+}
+
+### Subir una imagen
+POST {{baseUrl}}/uploadImage
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+Authorization: Bearer {{token}}
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="example.jpg"
+Content-Type: image/jpeg
+
+< ./example.jpg
+------WebKitFormBoundary--
+
+### Actualizar un artículo
+PUT {{baseUrl}}/updateArticle/article-id
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Título Actualizado",
+    "content": "Contenido actualizado del artículo..."
+}
+
+### Eliminar un artículo
+DELETE {{baseUrl}}/deleteArticle/article-id
+Authorization: Bearer {{token}}
