@@ -1,0 +1,267 @@
+{
+  "name": "Publicar Artículo con Imágenes",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "chooser",
+        "options": {
+          "fields": [
+            {
+              "name": "title",
+              "type": "string",
+              "required": true,
+              "placeholder": "Título del artículo"
+            },
+            {
+              "name": "content",
+              "type": "text",
+              "required": true,
+              "placeholder": "Contenido del artículo"
+            },
+            {
+              "name": "author",
+              "type": "string",
+              "required": true,
+              "placeholder": "Nombre del autor"
+            },
+            {
+              "name": "authorRole",
+              "type": "string",
+              "required": true,
+              "placeholder": "Cargo del autor"
+            },
+            {
+              "name": "summary",
+              "type": "text",
+              "required": true,
+              "placeholder": "Resumen del artículo"
+            },
+            {
+              "name": "tags",
+              "type": "string",
+              "placeholder": "tag1,tag2,tag3"
+            },
+            {
+              "name": "category",
+              "type": "options",
+              "options": [
+                "Tutorial",
+                "Noticia",
+                "Análisis",
+                "Investigación"
+              ]
+            },
+            {
+              "name": "images",
+              "type": "files",
+              "multiple": true
+            }
+          ]
+        }
+      },
+      "name": "Form Trigger",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "headers": {
+          "Authorization": "Bearer {{$node.Auth.data.token}}"
+        },
+        "url": "={{$env.API_URL}}/uploadImage",
+        "options": {
+          "form": {
+            "file": "={{$node['Form Trigger'].data.images}}"
+          }
+        }
+      },
+      "name": "Upload Images",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.API_URL}}/createArticle",
+        "authentication": "headerAuth",
+        "headers": {
+          "Authorization": "Bearer {{$node.Auth.data.token}}"
+        },
+        "jsonParameters": true,
+        "options": {},
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "={{$node['Form Trigger'].data.title}}"
+            },
+            {
+              "name": "content",
+              "value": "={{$node['Form Trigger'].data.content}}"
+            },
+            {
+              "name": "author",
+              "value": "={{$node['Form Trigger'].data.author}}"
+            },
+            {
+              "name": "authorRole",
+              "value": "={{$node['Form Trigger'].data.authorRole}}"
+            },
+            {
+              "name": "summary",
+              "value": "={{$node['Form Trigger'].data.summary}}"
+            },
+            {
+              "name": "tags",
+              "value": "={{$node['Form Trigger'].data.tags.split(',')}}"
+            },
+            {
+              "name": "category",
+              "value": "={{$node['Form Trigger'].data.category}}"
+            },
+            {
+              "name": "imageUrls",
+              "value": "={{$node['Upload Images'].data.map(i => i.url)}}"
+            }
+          ]
+        }
+      },
+      "name": "Create Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node['Create Article'].data.success}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{$env.TELEGRAM_CHAT_ID}}"
+            },
+            {
+              "name": "text",
+              "value": "=Nuevo artículo publicado:\n\nTítulo: {{$node['Form Trigger'].data.title}}\nAutor: {{$node['Form Trigger'].data.author}}\nURL: {{$env.SITE_URL}}/articles/{{$node['Create Article'].data.articleId}}"
+            }
+          ]
+        }
+      },
+      "name": "Notify Success",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1050,
+        250
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{$env.TELEGRAM_CHAT_ID}}"
+            },
+            {
+              "name": "text",
+              "value": "=Error al publicar artículo:\n\nTítulo: {{$node['Form Trigger'].data.title}}\nError: {{$node['Create Article'].error.message}}"
+            }
+          ]
+        }
+      },
+      "name": "Notify Error",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1050,
+        350
+      ]
+    }
+  ],
+  "connections": {
+    "Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Upload Images",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Images": {
+      "main": [
+        [
+          {
+            "node": "Create Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Article": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Notify Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
