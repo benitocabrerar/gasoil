@@ -1,74 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de GasOil</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="header">
-        <h1>Control de GasOil</h1>
-        <nav>
-            <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#registros">Registros</a></li>
-                <li><a href="#estadisticas">Estadísticas</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="inicio" class="hero">
-            <h2>Sistema de Control de Consumo de GasOil</h2>
-            <p>Gestiona y monitorea el consumo de combustible de manera eficiente</p>
-        </section>
-
-        <section id="registros" class="registros">
-            <h2>Registros de Consumo</h2>
-            <div class="registro-form">
-                <h3>Nuevo Registro</h3>
-                <form id="gasoilForm">
-                    <div class="form-group">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" name="fecha" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidad">Cantidad (Litros):</label>
-                        <input type="number" id="cantidad" name="cantidad" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="precio">Precio por Litro:</label>
-                        <input type="number" id="precio" name="precio" step="0.01" required>
-                    </div>
-                    <button type="submit">Registrar</button>
-                </form>
-            </div>
-        </section>
-
-        <section id="estadisticas" class="estadisticas">
-            <h2>Estadísticas</h2>
-            <div class="stats-container">
-                <div class="stat-card">
-                    <h3>Consumo Total</h3>
-                    <p id="consumoTotal">0 L</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Gasto Total</h3>
-                    <p id="gastoTotal">$0.00</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Promedio Mensual</h3>
-                    <p id="promedioMensual">0 L</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Control de GasOil. Todos los derechos reservados.</p>
-    </footer>
-
-    <script src="app.js"></script>
-</body>
+    <title>Herramientas Especializadas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
