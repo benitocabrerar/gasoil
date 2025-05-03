@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gasoil/static/css/main.d6380648.css",
-    "main.js": "/gasoil/static/js/main.0d0d342d.js",
+    "main.js": "/gasoil/static/js/main.53b38b8f.js",
     "index.html": "/gasoil/index.html",
     "main.d6380648.css.map": "/gasoil/static/css/main.d6380648.css.map",
-    "main.0d0d342d.js.map": "/gasoil/static/js/main.0d0d342d.js.map"
+    "main.53b38b8f.js.map": "/gasoil/static/js/main.53b38b8f.js.map"
   },
   "entrypoints": [
     "static/css/main.d6380648.css",
-    "static/js/main.0d0d342d.js"
+    "static/js/main.53b38b8f.js"
   ]
 }
