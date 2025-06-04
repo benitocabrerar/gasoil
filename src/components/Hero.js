@@ -34,6 +34,4 @@ const Hero = ({ onNavigate }) => {
 
 export default Hero;
 
-// Resto de archivos permanecen igual
 
-// DONE

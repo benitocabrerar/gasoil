@@ -162,4 +162,3 @@ const Login = ({ onLogin }) => {
 
 export default Login;
 
-// DONE

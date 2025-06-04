@@ -42,4 +42,3 @@ const PublishArticle = () => {
 
 export default PublishArticle;
 
-// DONE
