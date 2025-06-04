@@ -38,4 +38,3 @@ const ToolCard = ({ name, description, category, complexity, icon, onSelect }) =
 
 export default ToolCard;
 
-// DONE

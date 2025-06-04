@@ -27,6 +27,4 @@ const Footer = () => {
 
 export default Footer;
 
-// Resto de archivos permanecen igual
 
-// DONE
